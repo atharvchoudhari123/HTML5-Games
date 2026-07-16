@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Lounge</title>
+    <style>
+        body {
+            cursor: url('https://cdn.jsdelivr.net/gh/web-ports/jsab@main/Cursor.png'), auto;
+            background-color: #000000;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #sidebar-frame {
+            width: 260px;
+            height: 100%;
+            border: none;
+            border-right: 1px solid #1f1f1f;
+            background-color: #0d0d0d;
+        }
+
+        #game-container {
+            flex-grow: 1;
+            height: 100%;
+            position: relative;
+            background-color: #000000;
+        }
+
+        #stage {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Target panel loading your local menu layout -->
+    <iframe id="sidebar-frame" src="games.html"></iframe>
+
+    <!-- Main stage viewport container (Defaults to your updated games/ folder path) -->
+    <div id="game-container">
+        <iframe id="stage" src="games/jsab.html"></iframe>
+    </div>
+
+</body>
+</html>

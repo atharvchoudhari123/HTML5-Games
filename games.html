@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Selection Menu</title>
+    <style>
+        body {
+            cursor: url('https://cdn.jsdelivr.net/gh/web-ports/jsab@main/Cursor.png'), auto;
+            background-color: #0d0d0d;
+            color: #ffffff;
+            margin: 0;
+            padding: 24px 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+
+        #sidebar-title {
+            padding: 0 24px;
+            margin-bottom: 32px;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(270deg, #ff3333, #ff8833, #33ff33, #3388ff, #8833ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 8s ease infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .game-btn {
+            background: none;
+            border: none;
+            color: #777777;
+            padding: 16px 24px;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            width: 100%;
+            border-left: 4px solid transparent;
+            display: block;
+            outline: none;
+        }
+
+        .game-btn:hover {
+            color: #ffffff;
+            background-color: #141414;
+        }
+
+        .game-btn.active {
+            color: #00ff88;
+            background-color: #171717;
+            border-left: 4px solid #00ff88;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar-title">Arcade Lounge</div>
+
+    <!-- Direct relative paths pointing to the games/ directory -->
+    <button class="game-btn active" onclick="changeGame('games/jsab.html', this)">JSAB</button>
+    <button class="game-btn" onclick="changeGame('games/celeste.html', this)">Celeste</button>
+    <button class="game-btn" onclick="changeGame('games/cuphead.html', this)">Cuphead</button>
+    <button class="game-btn" onclick="changeGame('games/99balls.html', this)">99 balls</button>
+
+    <script>
+        function changeGame(localPath, btnElement) {
+            // Reaches out to the top-level main index page window
+            const topWindow = window.top || parent;
+            const mainStage = topWindow.document.getElementById('stage');
+            
+            if (mainStage) {
+                // 1. Strip Scramjet parameters, custom configs, or sandboxed document overwrites
+                mainStage.removeAttribute('srcdoc');
+                if (mainStage.contentWindow && mainStage.contentWindow.__scramjet) {
+                    delete mainStage.contentWindow.__scramjet;
+                }
+                
+                // 2. Generate a perfectly clean, absolute path from your direct root server domain
+                // E.g., transforms "games/jsab.html" into "http://localhost:8080/games/jsab.html"
+                const absolutePath = topWindow.location.origin + '/' + localPath.replace(/^\/+/, '');
+                
+                // 3. Mount the path cleanly
+                mainStage.src = absolutePath;
+            }
+
+            // Reset navigation menu styling active highlights
+            document.querySelectorAll('.game-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Set current game item status active layout highlight
+            btnElement.classList.add('active');
+        }
+    </script>
+</body>
+</html>
